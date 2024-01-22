@@ -69,9 +69,9 @@ public class MapRepresentation implements Serializable {
 		this.g= new SingleGraph("My world vision");
 		this.g.setAttribute("ui.stylesheet",nodeStyle);
 
-		Platform.runLater(() -> {
-			openGui();
-		});
+//		Platform.runLater(() -> {
+//			openGui();
+//		});
 		//this.viewer = this.g.display();
 
 		this.nbEdges=0;
@@ -171,8 +171,6 @@ public class MapRepresentation implements Serializable {
 
 		return getShortestPath(myPosition,closest.get().getLeft());
 	}
-
-
 
 	public List<String> getOpenNodes(){
 		return this.g.nodes()

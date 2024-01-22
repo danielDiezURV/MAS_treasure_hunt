@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.su.mas</groupId>
-	<artifactId>dedale-etu</artifactId>
+	<artifactId>Mas_treasure_hunt</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Dedale-etu</name>
+	<name>MAS_treasure_hunt</name>
 
 	<description>Project used for both research and teaching around distributed systems and multi-agents systems</description>
 
@@ -182,7 +182,20 @@
 			<artifactId>tools</artifactId>
 			<version>-SNAPSHOT</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.4</version>
+		</dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>
@@ -193,8 +206,14 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>true</downloadJavadocs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<mainClass>eu.su.mas.dedaleEtu.princ.Principal</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>

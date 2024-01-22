@@ -80,7 +80,7 @@ public final class ConfigurationFile {
 	//public static String INSTANCE_TOPOLOGY="resources/topology/map2018-topology-ica";
 	//public static String INSTANCE_TOPOLOGY="resources/topology/map2021-topologyExam1-tree.dgs";
 	//public static String INSTANCE_TOPOLOGY="resources/interlocking/mapInterlocking2-topology";
-	public static String INSTANCE_TOPOLOGY="resources/topology/map2023-topologyExam.dgs";
+	public static String INSTANCE_TOPOLOGY="resources/URV.dgs";
 	//public static String INSTANCE_TOPOLOGY="resources/topology/map2020-topologyExam1-graph.dgs";
 	//public static String INSTANCE_TOPOLOGY="resources/map2018-topology";
 	//public static String INSTANCE_TOPOLOGY="resources/topology/map2022-topologyExam1-draft.dgs";
@@ -102,7 +102,7 @@ public final class ConfigurationFile {
 	//public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/interlocking/mapInterlocking2-elements";
 	//public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/map2018-elements";
 	//public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/mapInterlocking2-elements";
-	public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/treasureHunt/map2023-elements";
+	public static String INSTANCE_CONFIGURATION_ELEMENTS="resources/URVelements";
 	
 	
 	/************************************
@@ -155,7 +155,7 @@ public final class ConfigurationFile {
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agentExplo-2.json";
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agentExploCoop-2";
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agentExploCoop-2.json";
-	public static String INSTANCE_CONFIGURATION_ENTITIES="resources/treasureHunt/map2023-entities.json";
+	public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agents.json";
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/treasureHunt/agentTankerCollect.json";
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/agentKeyboardControlled";
 	//public static String INSTANCE_CONFIGURATION_ENTITIES="resources/hunt/map2020-entitiesTree";
