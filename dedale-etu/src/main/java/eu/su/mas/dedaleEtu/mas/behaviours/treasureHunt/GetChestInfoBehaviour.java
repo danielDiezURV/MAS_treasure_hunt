@@ -2,6 +2,7 @@ package eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt;
 
 import eu.su.mas.dedaleEtu.mas.knowledge.Chest;
 import eu.su.mas.dedaleEtu.mas.knowledge.ChestLocationMessage;
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -9,22 +10,18 @@ import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 
 import java.util.List;
+import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
 
-/**
- * The agent periodically share its map.
- * It blindly tries to send all its graph to its friend(s)
- * If it was written properly, this sharing action would NOT be in a ticker behaviour and only a subgraph would be shared.
 
- * @author hc
- *
- */
-public class GetPathForChestBehaviour extends TickerBehaviour {
+public class GetChestInfoBehaviour extends TickerBehaviour {
 	private List<Chest> chestsLocations;
-	private List<String> receivers;
 
-	public GetPathForChestBehaviour(Agent a, long period, List<Chest> chestsLocations) {
+	private MapRepresentation myMap;
+
+	public GetChestInfoBehaviour(Agent a, long period, List<Chest> chestsLocations, MapRepresentation myMap) {
 		super(a, period);
 		this.chestsLocations = chestsLocations;
+		this.myMap = myMap;
 	}
 
 	private static final long serialVersionUID = -568863390879327961L;
@@ -45,6 +42,9 @@ public class GetPathForChestBehaviour extends TickerBehaviour {
 			sgreceived.getChestLocations().forEach(chestLocation -> {
 				if (this.chestsLocations.stream().noneMatch(chestLocation1 -> chestLocation1.getChestLocation().equals(chestLocation.getChestLocation()))) {
 					this.chestsLocations.add(chestLocation);
+					if (this.myMap != null){
+						this.myMap.addNode(chestLocation.getChestLocation(), MapAttribute.closed);
+					}
 				}
 				else {
 					this.chestsLocations.stream().filter(chestLocation1 -> chestLocation1.getChestLocation().equals(chestLocation.getChestLocation())).forEach(chestLocation1 -> {

@@ -19,7 +19,7 @@ public class AgentStatus implements Serializable {
 
 	private static final long serialVersionUID = 9122840206357843902L;
 
-	@Getter @Setter
+	@Getter
 	private TreasureHuntAction action;
 	@Getter @Setter
 	private String agentName;
@@ -33,7 +33,10 @@ public class AgentStatus implements Serializable {
 	private Integer priority;
 	private Integer desesperation;
 
-
+	public void setAction(TreasureHuntAction action) {
+		this.action = action;
+		this.priority = action.getPriority();
+	}
 	public Integer getPriority() {
 		return priority + desesperation;
 	}
@@ -44,5 +47,10 @@ public class AgentStatus implements Serializable {
 
 	public void resetDesesperation() {
 		this.desesperation = 0;
+	}
+
+	public Integer getHierarchy() {
+		//having names like explo1, messenger2...explo10 return number 1, 2, 10
+		return Integer.parseInt(this.agentName.replaceAll("[^0-9]", ""));
 	}
 }

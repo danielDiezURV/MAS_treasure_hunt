@@ -51,6 +51,5 @@ public class GetMapInstanceBehaviour extends TickerBehaviour {
 				this.myMap.mergeMap(sgreceived);
 			}
 		}
-
 	}
 }

@@ -1,6 +1,7 @@
 package eu.su.mas.dedaleEtu.mas.knowledge;
 
 import eu.su.mas.dedaleEtu.mas.knowledge.enums.ChestStatusEnum;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Getter @Setter
+@Getter @Setter @Builder
 public class Chest implements Serializable {
 	private static final long serialVersionUID = -2343866585541649998L;
 
@@ -24,16 +25,4 @@ public class Chest implements Serializable {
 	private Date lastUpdate;
 	private Integer notifiedTimes;
 
-	public Chest(ChestStatusEnum chestStatus, List<String> pathToChest, String chestLocation, Integer lockPickRequired, Integer actualLockPick, Integer gold, Integer diamond, Date lastUpdate) {
-		this.status = chestStatus;
-		this.pathToChest = pathToChest;
-		this.chestLocation = chestLocation;
-		this.actualLockPick = lockPickRequired;
-		this.lockPickRequired = actualLockPick;
-		this.notifiedLockPick = getActualLockPick();
-		this.gold = gold;
-		this.diamond = diamond;
-		this.lastUpdate = lastUpdate;
-		this.notifiedTimes = 0;
-	}
 }

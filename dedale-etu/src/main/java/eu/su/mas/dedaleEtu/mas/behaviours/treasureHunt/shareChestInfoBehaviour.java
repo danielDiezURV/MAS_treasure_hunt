@@ -12,11 +12,11 @@ import org.apache.commons.collections4.CollectionUtils;
 import java.io.IOException;
 import java.util.List;
 
-public class AskForChestBehaviour extends TickerBehaviour {
+public class shareChestInfoBehaviour extends TickerBehaviour {
 	private List<String> receivers;
 	private List<Chest> chestsLocation;
 
-	public AskForChestBehaviour(Agent a, long period, List<Chest> chestsLocations, List<String> receivers) {
+	public shareChestInfoBehaviour(Agent a, long period, List<Chest> chestsLocations, List<String> receivers) {
 		super(a, period);
 		this.chestsLocation = chestsLocations;
 		this.receivers = receivers;

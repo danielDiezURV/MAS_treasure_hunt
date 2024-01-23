@@ -7,18 +7,16 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.io.IOException;
 import java.util.List;
 
-public class ShareNextMovement extends TickerBehaviour{
+public class ShareAgentStatusBehaviour extends TickerBehaviour{
 	private static final long serialVersionUID = -998931308518904610L;
 	private final List<String> receivers;
 	private final AgentStatus currentStatus;
 
-	public ShareNextMovement(Agent myagent, long period,AgentStatus currentStatus, List<String> receivers) {
+	public ShareAgentStatusBehaviour(Agent myagent, long period, AgentStatus currentStatus, List<String> receivers) {
 		super(myagent, period);
 		this.receivers=receivers;
 		this.currentStatus = currentStatus;
@@ -32,9 +30,9 @@ public class ShareNextMovement extends TickerBehaviour{
 		ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
 		
 		msg.setSender(this.myAgent.getAID());
-		msg.setProtocol("ShareNextMovementProtocol");
+		msg.setProtocol("SHARE-AGENT-STATUS");
 
-		if (myPosition!=null && myPosition.getLocationId()!=""){
+		if (myPosition!=null && !myPosition.getLocationId().isEmpty()){
 			try {
 				msg.setContentObject(this.currentStatus);
 			} catch (IOException e) {
