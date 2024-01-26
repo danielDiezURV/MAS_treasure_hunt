@@ -2,8 +2,7 @@ package eu.su.mas.dedaleEtu.mas.agents.treasureHunt;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.startMyBehaviours;
-import eu.su.mas.dedaleEtu.mas.behaviours.ExploCoopBehaviour;
-import eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt.ExplorerBehaviour;
+import eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt.mainBehaviours.ExplorerMainBehaviour;
 import eu.su.mas.dedaleEtu.mas.knowledge.AgentStatus;
 import eu.su.mas.dedaleEtu.mas.knowledge.Chest;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
@@ -26,14 +25,16 @@ public class ExplorerAgent extends AbstractDedaleAgent {
 	protected void setup(){
 		super.setup();
 		final Object[] args = getArguments();
-		this.agentNames=new ArrayList<String>();
+		this.agentNames=new ArrayList<>();
+		Integer period = 100;
 
 		if(args.length==0){
 			System.err.println("Error while creating the agent, names of agent to contact expected");
 			System.exit(-1);
 		}
 		else{
-			int i = 2;
+			period = (Integer) args[2];
+			int i = 3;
 			while (i < args.length) {
 				this.agentNames.add((String) args[i]);
 				i++;
@@ -48,7 +49,7 @@ public class ExplorerAgent extends AbstractDedaleAgent {
 		}
 		List<Behaviour> lb=new ArrayList<Behaviour>();
 
-		lb.add(new ExplorerBehaviour(this,this.myMap, this.explorerNames, this.agentNames, this.chests, this.agentsInRange, this.currentStatus));
+		lb.add(new ExplorerMainBehaviour(this, period,this.myMap, this.explorerNames, this.agentNames, this.chests, this.agentsInRange, this.currentStatus));
 
 		addBehaviour(new startMyBehaviours(this,lb));
 		System.out.println("the  agent "+this.getLocalName()+ " is started");

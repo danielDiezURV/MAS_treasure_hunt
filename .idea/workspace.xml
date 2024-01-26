@@ -5,17 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b079233d-52b8-44e6-bd2b-50ad05164d1f" name="Changes" comment="Functional Explorer">
-      <change afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/GetChestInfoBehaviour.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/mainBehaviours/CollectorMainBehaviour.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/mainBehaviours/ExplorerMainBehaviour.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dedale-etu/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/agents/treasureHunt/TreasureExplorer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/AskForChestBehaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/shareChestInfoBehaviour.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ExplorerBehaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ExplorerBehaviour.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/GetMapInstanceBehaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/GetMapInstanceBehaviour.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/GetPathForChestBehaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/GetAgentStatusBehaviour.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ShareNextMovement.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ShareAgentStatusBehaviour.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dedale-etu/resources/agents.json" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/resources/agents.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/agents/treasureHunt/ExplorerAgent.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/agents/treasureHunt/ExplorerAgent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ExplorerBehaviour.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/GetChestInfoBehaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/GetChestInfoBehaviour.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ShareMapInstanceBehaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ShareMapInstanceBehaviour.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/shareChestInfoBehaviour.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ShareChestInfoBehaviour.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/knowledge/AgentStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/knowledge/AgentStatus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/knowledge/Chest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/knowledge/Chest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/knowledge/ChestLocationMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/knowledge/ChestLocationMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/knowledge/enums/TreasureHuntAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/knowledge/enums/TreasureHuntAction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/princ/Principal.java" beforeDir="false" afterPath="$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/princ/Principal.java" afterDir="false" />
     </list>
@@ -49,23 +50,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Principal.executor&quot;: &quot;Run&quot;,
-    &quot;Maven.Mas_treasure_hunt [org.codehaus.mojo:exec-maven-plugin:3.0.0:java].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.treasure_hunt.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/danid/Desktop/MAS_treasure_hunt/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;Errors&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Principal.executor": "Run",
+    "Maven.Mas_treasure_hunt [org.codehaus.mojo:exec-maven-plugin:3.0.0:java].executor": "Run",
+    "Maven.treasure_hunt.executor": "Debug",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/danid/Desktop/MAS_treasure_hunt/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "Errors"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\danid\Desktop\MAS_treasure_hunt\dedale-etu\src\main\java\eu\su\mas\dedaleEtu\mas\behaviours" />
@@ -79,6 +80,7 @@
       <recent name="C:\Users\danid\Desktop\MAS_treasure_hunt\dedale-etu\resources" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt.mainBehaviours" />
       <recent name="eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt" />
       <recent name="eu.su.mas.dedaleEtu.mas.agents.dummies.explo" />
     </key>
@@ -215,23 +217,47 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ExplorerBehaviour.java</url>
-          <line>120</line>
-          <option name="timeStamp" value="56" />
+          <condition expression="chestPath == null" language="JAVA" />
+          <url>file://$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/mainBehaviours/ExplorerMainBehaviour.java</url>
+          <line>128</line>
+          <option name="timeStamp" value="98" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ExplorerBehaviour.java</url>
-          <line>88</line>
-          <option name="timeStamp" value="63" />
+          <condition expression="this.myAgent.getLocalName().equals(&quot;Explo3&quot;)" language="JAVA" />
+          <url>file://$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/mainBehaviours/ExplorerMainBehaviour.java</url>
+          <line>97</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/mainBehaviours/CollectorMainBehaviour.java</url>
+          <line>53</line>
+          <option name="timeStamp" value="110" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/mainBehaviours/CollectorMainBehaviour.java</url>
+          <line>128</line>
+          <option name="timeStamp" value="112" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ShareMapInstanceBehaviour.java</url>
+          <line>36</line>
+          <properties>
+            <option name="lambda-ordinal" value="-1" />
+          </properties>
+          <option name="timeStamp" value="116" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/dedale-etu/src/main/java/eu/su/mas/dedaleEtu/mas/behaviours/treasureHunt/ShareChestInfoBehaviour.java</url>
+          <line>47</line>
+          <option name="timeStamp" value="117" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="MavenRunConfiguration">
-        <watch expression="this.myMap.getShortestPath(((AbstractDedaleAgent)this.myAgent).getCurrentPosition().getLocationId(), closedChest.get().getChestLocation())" language="JAVA" />
         <watch expression="((AbstractDedaleAgent)this.myAgent).getCurrentPosition().getLocationId()" language="JAVA" />
-        <watch expression="closedChest.get().getChestLocation()" language="JAVA" />
-        <watch expression="this.agentsInRange.get(0).getPriority() &gt; this.currentStatus.getPriority()" language="JAVA" />
+        <watch expression="this.currentStatus.getFollowingPath().get(0)" language="JAVA" />
+        <watch expression="this.myAgent.getLocalName()" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

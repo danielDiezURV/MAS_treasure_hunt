@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
@@ -14,7 +15,11 @@ public class ChestLocationMessage implements Serializable {
 	private List<Chest> chestLocations;
 	// Map<PathToChest, [gold, diamond]>
 
-	public ChestLocationMessage(List<Chest> chestLocations) {
-		this.chestLocations = chestLocations;
+	public ChestLocationMessage() {
+		this.chestLocations = new ArrayList<>();
+	}
+
+	public void addChestLocation(Chest chestLocation) {
+		this.chestLocations.add(chestLocation);
 	}
 }

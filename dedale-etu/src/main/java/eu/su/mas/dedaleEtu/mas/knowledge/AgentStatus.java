@@ -1,17 +1,12 @@
 package eu.su.mas.dedaleEtu.mas.knowledge;
 
-import eu.su.mas.dedale.env.EntityType;
-import eu.su.mas.dedale.env.Location;
-import eu.su.mas.dedaleEtu.mas.knowledge.enums.ChestStatusEnum;
 import eu.su.mas.dedaleEtu.mas.knowledge.enums.TreasureHuntAction;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serial;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Builder
@@ -23,8 +18,6 @@ public class AgentStatus implements Serializable {
 	private TreasureHuntAction action;
 	@Getter @Setter
 	private String agentName;
-	@Getter @Setter
-	private EntityType senderType;
 	@Getter @Setter
 	private String currentLocation;
 	@Getter @Setter
@@ -50,7 +43,11 @@ public class AgentStatus implements Serializable {
 	}
 
 	public Integer getHierarchy() {
-		//having names like explo1, messenger2...explo10 return number 1, 2, 10
 		return Integer.parseInt(this.agentName.replaceAll("[^0-9]", ""));
+	}
+
+	public void addMovementToPath(String location) {((LinkedList<String>)this.followingPath).addFirst(location);}
+	public void removeMovementFromPath(){
+		((LinkedList<String>)this.followingPath).removeFirst();
 	}
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Getter @Setter @Builder
@@ -24,5 +25,12 @@ public class Chest implements Serializable {
 	private Integer diamond;
 	private Date lastUpdate;
 	private Integer notifiedTimes;
+
+	public void addMovementToPath(String location) {
+		((LinkedList<String>)this.pathToChest).addFirst(location);
+	}
+	public void removeMovementFromPath(){
+		((LinkedList<String>)this.pathToChest).removeFirst();
+	}
 
 }

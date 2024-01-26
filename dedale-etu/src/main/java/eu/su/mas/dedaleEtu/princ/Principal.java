@@ -267,12 +267,12 @@ public class Principal {
 		}
 
 		AgentController	ag;
-
+		Integer actionPeriodMilliseconds = 100;
 		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER2_NAME);
-		Object [] entityParameters0={"My parameters"};
-		Object [] entityParameters = { 	"Explo1", "Explo2", "Explo3", "Explo4",
-				"Collect1", "Collect2", "Collect3", "Collect4",
-				"Msg1", "Msg2", "Msg3", "Msg4", "Msg5", "Msg6", "Msg7", "Msg8" };
+		Object [] entityParameters = {actionPeriodMilliseconds ,
+									 "Explo1","Explo2", "Explo3", "Explo4",
+								     "Collect1", "Collect2", "Collect3", "Collect4",
+				 					 "Msg1", "Msg2", "Msg3", "Msg4", "Msg5", "Msg6", "Msg7", "Msg8" };
 		//Initialize explorers
 		agentName = "Explo1";
 		ag = createNewDedaleAgent(c, agentName, ExplorerAgent.class.getName(), entityParameters);
@@ -286,20 +286,20 @@ public class Principal {
 		agentName = "Explo4";
 		ag = createNewDedaleAgent(c, agentName, ExplorerAgent.class.getName(), entityParameters);
 		agentList.add(ag);
-//		//Initialize collectors
-//		agentName = "Collect1";
-//		ag = createNewDedaleAgent(c, agentName, CollectorAgent.class.getName(), entityParameters);
-//		agentList.add(ag);
-//		agentName = "Collect2";
-//		ag = createNewDedaleAgent(c, agentName, CollectorAgent.class.getName(), entityParameters);
-//		agentList.add(ag);
-//		agentName = "Collect3";
-//		ag = createNewDedaleAgent(c, agentName, CollectorAgent.class.getName(), entityParameters);
-//		agentList.add(ag);
-//		agentName = "Collect4";
-//		ag = createNewDedaleAgent(c, agentName, CollectorAgent.class.getName(), entityParameters);
-//		agentList.add(ag);
-//		//Initialize collectors
+		//Initialize collectors
+		agentName = "Collect1";
+		ag = createNewDedaleAgent(c, agentName, CollectorAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "Collect2";
+		ag = createNewDedaleAgent(c, agentName, CollectorAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "Collect3";
+		ag = createNewDedaleAgent(c, agentName, CollectorAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+		agentName = "Collect4";
+		ag = createNewDedaleAgent(c, agentName, CollectorAgent.class.getName(), entityParameters);
+		agentList.add(ag);
+//		//Initialize Messengers
 //		agentName = "Msg1";
 //		ag = createNewDedaleAgent(c, agentName, MessengerAgent.class.getName(), entityParameters);
 //		agentList.add(ag);

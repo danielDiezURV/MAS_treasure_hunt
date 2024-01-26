@@ -16,12 +16,9 @@ import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
 public class GetChestInfoBehaviour extends TickerBehaviour {
 	private List<Chest> chestsLocations;
 
-	private MapRepresentation myMap;
-
-	public GetChestInfoBehaviour(Agent a, long period, List<Chest> chestsLocations, MapRepresentation myMap) {
+	public GetChestInfoBehaviour(Agent a, long period, List<Chest> chestsLocations) {
 		super(a, period);
 		this.chestsLocations = chestsLocations;
-		this.myMap = myMap;
 	}
 
 	private static final long serialVersionUID = -568863390879327961L;
@@ -36,15 +33,14 @@ public class GetChestInfoBehaviour extends TickerBehaviour {
 			ChestLocationMessage sgreceived=null;
 			try {
 				sgreceived = (ChestLocationMessage)msgReceived.getContentObject();
+				if (sgreceived == null) { return;}
 			} catch (UnreadableException e) {
 				e.printStackTrace();
 			}
-			sgreceived.getChestLocations().forEach(chestLocation -> {
+			//for chestLocation in chestLocations
+			for (Chest chestLocation : sgreceived.getChestLocations()) {
 				if (this.chestsLocations.stream().noneMatch(chestLocation1 -> chestLocation1.getChestLocation().equals(chestLocation.getChestLocation()))) {
 					this.chestsLocations.add(chestLocation);
-					if (this.myMap != null){
-						this.myMap.addNode(chestLocation.getChestLocation(), MapAttribute.closed);
-					}
 				}
 				else {
 					this.chestsLocations.stream().filter(chestLocation1 -> chestLocation1.getChestLocation().equals(chestLocation.getChestLocation())).forEach(chestLocation1 -> {
@@ -57,7 +53,7 @@ public class GetChestInfoBehaviour extends TickerBehaviour {
 						}
 					});
 				}
-			});
+			}
 		}
 	}
 }
