@@ -17,7 +17,6 @@ public class ExplorerAgent extends AbstractDedaleAgent {
 	private static final long serialVersionUID = -7969469610241668140L;
 	private MapRepresentation myMap;
 	private List<String> agentNames;
-	private List<String> explorerNames;
 	private List<Chest> chests;
 	private List<AgentStatus> agentsInRange;
 	private AgentStatus currentStatus;
@@ -39,17 +38,23 @@ public class ExplorerAgent extends AbstractDedaleAgent {
 				this.agentNames.add((String) args[i]);
 				i++;
 			}
+			Integer hierarchy = this.agentNames.indexOf(this.getLocalName());
 			this.agentNames.remove(this.getLocalName());
 
-			this.explorerNames = this.agentNames.stream().filter(x -> x.contains("Explo")).collect(Collectors.toList());
 			//Init Explorer objects
 			this.chests = new ArrayList<>();
 			this.agentsInRange = new ArrayList<>();
-			this.currentStatus = AgentStatus.builder().agentName(this.getLocalName()).desesperation(0).priority(0).build();
+			this.currentStatus = AgentStatus.builder()
+								.agentName(this.getLocalName())
+								.desesperation(0)
+								.priority(0)
+								.followingPath(new ArrayList<>())
+								.hierarchy(hierarchy)
+								.build();
 		}
 		List<Behaviour> lb=new ArrayList<Behaviour>();
 
-		lb.add(new ExplorerMainBehaviour(this, period,this.myMap, this.explorerNames, this.agentNames, this.chests, this.agentsInRange, this.currentStatus));
+		lb.add(new ExplorerMainBehaviour(this, period,this.myMap, this.agentNames, this.chests, this.agentsInRange, this.currentStatus));
 
 		addBehaviour(new startMyBehaviours(this,lb));
 		System.out.println("the  agent "+this.getLocalName()+ " is started");

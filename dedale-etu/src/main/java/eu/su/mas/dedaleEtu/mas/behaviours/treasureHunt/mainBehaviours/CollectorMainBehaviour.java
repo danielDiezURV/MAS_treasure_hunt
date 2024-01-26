@@ -8,13 +8,10 @@ import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt.*;
 import eu.su.mas.dedaleEtu.mas.knowledge.AgentStatus;
 import eu.su.mas.dedaleEtu.mas.knowledge.Chest;
-import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
-import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
 import eu.su.mas.dedaleEtu.mas.knowledge.enums.ChestStatusEnum;
 import eu.su.mas.dedaleEtu.mas.knowledge.enums.TreasureHuntAction;
 import jade.core.behaviours.SimpleBehaviour;
 import org.apache.commons.collections4.CollectionUtils;
-import weka.gui.visualize.JPEGWriter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -80,16 +77,23 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 	}
 
 	private TreasureHuntAction chooseNextAction(List<Couple<Location,List<Couple<Observation,Integer>>>> lobs, List<Chest> closedChests, List<Chest> openChests) {
+		Optional<String> observablePathLocation;
+		List<Chest> openChestsByType;
+		Integer agentFreeCapacity;
+		openChestsByType =((AbstractDedaleAgent)this.myAgent).getMyTreasureType().equals(Observation.GOLD) ?
+				openChests.stream().filter(chest -> chest.getGold() > 0).collect(Collectors.toList()) :
+				openChests.stream().filter(chest -> chest.getDiamond() > 0).collect(Collectors.toList());
+
+		agentFreeCapacity = ((AbstractDedaleAgent)this.myAgent).getBackPackFreeSpace().get(0).getRight();
 		List<String> freeLocations = lobs.stream().map(Couple::getLeft).map(Location::getLocationId).collect(Collectors.toList());
-		if (CollectionUtils.isNotEmpty(freeLocations)) {
-			List<String> chestPath = new ArrayList<>();
-			Optional<String> observablePathLocation;
-			if (CollectionUtils.isNotEmpty(openChests)) {
-				for (Chest chest : closedChests) {
+		if (CollectionUtils.isNotEmpty(freeLocations) && agentFreeCapacity > 0) {
+
+			if (CollectionUtils.isNotEmpty(openChestsByType)) {
+				for (Chest chest : openChestsByType) {
 					observablePathLocation = freeLocations.stream().filter(chest.getPathToChest()::contains).findFirst();
 					if (observablePathLocation.isPresent()) {
 						int indexOfObservableLocation = chest.getPathToChest().indexOf(observablePathLocation.get());
-						this.currentStatus.setFollowingPath(chest.getPathToChest().subList(indexOfObservableLocation, chest.getPathToChest().size()));
+						this.currentStatus.setFollowingPath(new ArrayList<>(chest.getPathToChest().subList(indexOfObservableLocation, chest.getPathToChest().size())));
 						return TreasureHuntAction.C_COLLECT_CHEST;
 					}
 				}
@@ -99,7 +103,7 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 					observablePathLocation = freeLocations.stream().filter(chest.getPathToChest()::contains).findFirst();
 					if (observablePathLocation.isPresent()) {
 						int indexOfObservableLocation = chest.getPathToChest().indexOf(observablePathLocation.get());
-						this.currentStatus.setFollowingPath(chest.getPathToChest().subList(indexOfObservableLocation, chest.getPathToChest().size()));
+						this.currentStatus.setFollowingPath(new ArrayList<> (chest.getPathToChest().subList(indexOfObservableLocation, chest.getPathToChest().size())));
 						return TreasureHuntAction.C_UNLOCK_CHEST;
 					}
 				}
@@ -109,7 +113,12 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 				return TreasureHuntAction.C_EXPLORE;
 			}
 		}
-		return null;
+		if(!myJobHereIsDone && agentFreeCapacity == 0){
+			System.out.println(this.myAgent.getLocalName() + " - My job here is done. My capacity is full of resources. Leaving Collector role and turning into messenger. Total ticks:" + this.tickCounter);
+			this.myJobHereIsDone = true;
+		}
+		this.currentStatus.setFollowingPath(this.getRandomMovementPath(freeLocations));
+		return TreasureHuntAction.C_EXPLORE;
 	}
 
 	private void performNextMovement(TreasureHuntAction nextAction, List<Couple<Location,List<Couple<Observation,Integer>>>> lobs, List<Chest> closedChests, List<Chest> openChests) {
@@ -117,7 +126,7 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 		this.previousLocation = ((AbstractDedaleAgent)this.myAgent).getCurrentPosition().getLocationId();
 
 		List<AgentStatus> agentsWithPriority = this.agentsInRange.stream().filter(agentStatus -> agentStatus.getPriority() > this.currentStatus.getPriority() ||
-				(agentStatus.getPriority() == this.currentStatus.getPriority() && agentStatus.getHierarchy() > this.currentStatus.getHierarchy())).collect(Collectors.toList());
+				(agentStatus.getPriority() == this.currentStatus.getPriority() && agentStatus.getHierarchy() < this.currentStatus.getHierarchy())).collect(Collectors.toList());
 
 		List<String> priorityMovements = agentsWithPriority.stream()
 				.filter(agentStatus -> CollectionUtils.isNotEmpty(agentStatus.getFollowingPath()))
@@ -126,21 +135,21 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 
 		if (!priorityMovements.contains(this.currentStatus.getFollowingPath().get(0))) {
 			switch (nextAction) {
+				case C_EXPLORE:
 				case C_COLLECT_CHEST:
 					if (CollectionUtils.isNotEmpty(currentStatus.getFollowingPath())) {
-						this.performMovement(this.currentStatus.getFollowingPath().get(0), this.previousLocation);
+						this.performMovement(this.currentStatus.getFollowingPath().get(0), this.previousLocation, Boolean.FALSE);
 					}
-					// get last node of the path
 					observables = ((AbstractDedaleAgent)this.myAgent).observe().stream().map(Couple::getRight).flatMap(Collection::stream).map(Couple::getLeft).collect(Collectors.toList());
 					if (CollectionUtils.isNotEmpty(observables)) {
-						//Check my backpack capacity of gold and diamonds and try to collect if i have capacity of gold or diamonds
+						((AbstractDedaleAgent) this.myAgent).pick();
 						return;
 					}
 					break;
 
 				case C_UNLOCK_CHEST:
 					if (CollectionUtils.isNotEmpty(currentStatus.getFollowingPath())) {
-						((AbstractDedaleAgent) this.myAgent).moveTo(new gsLocation(this.currentStatus.getFollowingPath().get(0)));
+						this.performMovement(this.currentStatus.getFollowingPath().get(0), this.previousLocation, Boolean.FALSE);
 					}
 					observables = ((AbstractDedaleAgent)this.myAgent).observe().stream().map(Couple::getRight).flatMap(Collection::stream).map(Couple::getLeft).collect(Collectors.toList());
 					if (CollectionUtils.isNotEmpty(observables)) {
@@ -155,9 +164,7 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 					}
 					break;
 
-				case E_EXPLORE:
-                    this.performMovement(this.currentStatus.getFollowingPath().get(0), this.previousLocation);
-					break;
+
 			}
 		}
 		else{
@@ -167,44 +174,49 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 		}
 	}
 
-	private List<String> getRandomMovementPath(List<String> observableLocations) {
+	private ArrayList<String> getRandomMovementPath(List<String> observableLocations) {
 		observableLocations.remove(((AbstractDedaleAgent)this.myAgent).getCurrentPosition().getLocationId());
 		if (observableLocations.size() > 1) {
 			observableLocations.remove(this.previousLocation);
 		}
-		return Collections.singletonList(observableLocations.get(new Random().nextInt(0, observableLocations.size())));
+		return new ArrayList<>(Collections.singletonList(observableLocations.get(new Random().nextInt(0, observableLocations.size()))));
 	}
 
 	private void avoidDeadlock(List<String> priorityMovements, List<String> concurrentLocations) {
-		boolean movementPerformed;
 		List<String> freeLocations = concurrentLocations.stream().filter(lob -> !priorityMovements.contains(lob)).collect(Collectors.toList());
 		if (CollectionUtils.isNotEmpty(freeLocations)) {
 			// select randomly a free location using random
 			String nextNodeId = freeLocations.get(new Random().nextInt(0,freeLocations.size()));
-			this.performMovement(nextNodeId, this.currentStatus.getCurrentLocation());
+			this.performMovement(nextNodeId, this.currentStatus.getCurrentLocation(), Boolean.TRUE);
 		}
 		else {
 			String nextNodeId = concurrentLocations.get(new Random().nextInt(0,concurrentLocations.size()));
 			this.currentStatus.addMovementToPath(nextNodeId);
-			performMovement(nextNodeId, this.currentStatus.getCurrentLocation());
+			performMovement(nextNodeId, this.currentStatus.getCurrentLocation(), Boolean.TRUE);
 		}
 
     }
 
-	private void performMovement(String nextNodeId, String previousLocation) {
+	private void performMovement(String nextNodeId, String previousLocation, Boolean avoidingDeadlock) {
 		boolean movementPerformed = ((AbstractDedaleAgent)this.myAgent).moveTo(new gsLocation(nextNodeId));
 		if (movementPerformed) {
-			this.updatePaths(this.previousLocation, previousLocation);
-			this.currentStatus.resetDesesperation();
+			this.updatePaths(previousLocation, nextNodeId);
+			if(!((AbstractDedaleAgent)this.myAgent).getCurrentPosition().getLocationId().equals(previousLocation)){
+				this.currentStatus.resetDesesperation();
+			}
+			else if (avoidingDeadlock){
+				this.currentStatus.desesperationIncrease();
+			}
 		}
-		else {
+		else if (avoidingDeadlock){
 			this.currentStatus.desesperationIncrease();
 		}
 	}
 	private void updatePaths(String previousLocation, String currentLocation) {
 		boolean wasInPath;
 		boolean isInPath;
-		List<Chest> pathChestToUpdate = this.chests.stream().filter(chest -> chest.getPathToChest().contains(previousLocation) || chest.getPathToChest().contains(currentLocation)).collect(Collectors.toList());
+		List<Chest> pathChestToUpdate = new ArrayList<>(this.chests);
+		pathChestToUpdate = pathChestToUpdate.stream().filter(chest -> chest.getPathToChest().contains(previousLocation) || chest.getPathToChest().contains(currentLocation)).collect(Collectors.toList());
 
 		for (Chest chest : pathChestToUpdate){
 			wasInPath = chest.getPathToChest().contains(previousLocation);
@@ -214,7 +226,7 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 			}
 			else if (!wasInPath && isInPath){
 				int indexOfCurrentLocation = chest.getPathToChest().indexOf(currentLocation);
-				chest.setPathToChest(chest.getPathToChest().subList(indexOfCurrentLocation, chest.getPathToChest().size() - 1));
+				chest.setPathToChest(new ArrayList<>(chest.getPathToChest().subList(indexOfCurrentLocation, chest.getPathToChest().size())));
 			}
 			else if (wasInPath){
 				chest.removeMovementFromPath();
@@ -247,7 +259,7 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 					else{
 						Chest chest = Chest.builder()
 								.status(ChestStatusEnum.getStatus(obsMap.get("LockIsOpen"), obsMap.getOrDefault("Gold", 0),	obsMap.getOrDefault("Diamond", 0)))
-								.pathToChest(Arrays.asList(agentLocation, accessibleNode))
+								.pathToChest(new ArrayList<>(Arrays.asList(agentLocation, accessibleNode)))
 								.chestLocation(accessibleNode)
 								.lockPickRequired(obsMap.getOrDefault("LockPicking", 0))
 								.actualLockPick(obsMap.getOrDefault("Strength", 0))

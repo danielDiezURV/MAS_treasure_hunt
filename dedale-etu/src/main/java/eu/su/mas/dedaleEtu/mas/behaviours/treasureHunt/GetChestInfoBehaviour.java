@@ -1,5 +1,6 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt;
 
+import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.knowledge.Chest;
 import eu.su.mas.dedaleEtu.mas.knowledge.ChestLocationMessage;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
@@ -50,6 +51,10 @@ public class GetChestInfoBehaviour extends TickerBehaviour {
 							chestLocation1.setGold(chestLocation.getGold());
 							chestLocation1.setDiamond(chestLocation.getDiamond());
 							chestLocation1.setLastUpdate(chestLocation.getLastUpdate());
+							boolean betterPath = (!chestLocation1.getPathToChest().contains(((AbstractDedaleAgent)this.myAgent).getCurrentPosition().getLocationId()) && chestLocation.getPathToChest().contains(((AbstractDedaleAgent)this.myAgent).getCurrentPosition().getLocationId()));
+							if (chestLocation1.getPathToChest() == null || betterPath){
+								chestLocation1.setPathToChest(chestLocation.getPathToChest());
+							}
 						}
 					});
 				}

@@ -1,8 +1,8 @@
-# URV MESIIA Multi-agent systems practice: Preliminary revision
+# URV MESIIA Multi-agent systems practice
 ===============================================================
 ## Introduction
-This is a preliminar verion of an implementation of a multi-agent system using Dedale framework.
-The main goal of this part of the project is to initialize the dedale enviroment system with the urv.dgs map and the agents.
+Implementation of a multi-agent system using Dedale framework.
+The main goal of this project is to implement a multi-agent system capable of collecting as many resources as possible in a map with a limited number of resources through cooperation between agents. 
 
 ### Map
 The map used for this implementation is the one defined in moodle: urv.dgs.
@@ -22,29 +22,17 @@ diamonds:-139499:100:3:3
 ```
 ### Agents
 
-| Agent type | Gold capacity | Diamond capacity | Detection radius | Lock-picking strength |
-|:-----------|:-------------:|:----------------:|:----------------:|:---------------------:|
-| Explo1     |      -1       |        -1        |        0         |           3           |
-| Explo2     |      -1       |        -1        |        0         |           3           |
-| Explo3     |      -1       |        -1        |        0         |           3           |
-| Explo4     |      -1       |        -1        |        0         |           3           |
-| Collect1   |      400      |        -1        |        0         |           1           |
-| Collect2   |      400      |        -1        |        0         |           1           |
-| Collect3   |      -1       |       400        |        0         |           1           |
-| Collect4   |      -1       |       400        |        0         |           1           |
+| Agent type | Gold capacity | Diamond capacity | Detection radius | Lock-picking strength | Communication range |
+|:-----------|:-------------:|:----------------:|:----------------:|:---------------------:|:-------------------:|
+| Explo1     |      -1       |        -1        |        0         |           3           |          5          |
+| Explo2     |      -1       |        -1        |        0         |           3           |          5          |
+| Explo3     |      -1       |        -1        |        0         |           3           |          5          |
+| Explo4     |      -1       |        -1        |        0         |           3           |          5          |
+| Collect1   |      400      |        -1        |        0         |           1           |          5          |
+| Collect2   |      400      |        -1        |        0         |           1           |          5          |
+| Collect3   |      -1       |       400        |        0         |           1           |          5          |
+| Collect4   |      -1       |       400        |        0         |           1           |          5          |
 
-It also include the new agent defined in the previous step called messsenger with the following atributes:
-
-| Agent type | Gold capacity | Diamond capacity | Detection radius | Lock-picking strength |
-|:-----------|:-------------:|:----------------:|:----------------:|:---------------------:|
-| msg1       |      -1       |        -1        |        0         |           0           |
-| msg2       |      -1       |        -1        |        0         |           0           |
-| msg3       |      -1       |        -1        |        0         |           0           |
-| msg4       |      -1       |        -1        |        0         |           0           |
-| msg5       |      -1       |        -1        |        0         |           0           |
-| msg6       |      -1       |        -1        |        0         |           0           |
-| msg7       |      -1       |        -1        |        0         |           0           |
-| msg8       |      -1       |        -1        |        0         |           0           |
 
 Agents configuration file: resources/agents.json
 ````
@@ -136,94 +124,6 @@ Agents configuration file: resources/agents.json
     "detectionRadius": 0,
     "strengthExpertise": 1,
     "lockPickingExpertise":1
-  },
-  {
-    "agentType":"agentExplo",
-    "agentName": "Msg1",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": -1,
-    "backPackCapacityDiamond":-1,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"agentExplo",
-    "agentName": "Msg2",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": -1,
-    "backPackCapacityDiamond":-1,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"agentExplo",
-    "agentName": "Msg3",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": -1,
-    "backPackCapacityDiamond":-1,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"agentExplo",
-    "agentName": "Msg4",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": -1,
-    "backPackCapacityDiamond":-1,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"agentExplo",
-    "agentName": "Msg5",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": -1,
-    "backPackCapacityDiamond":-1,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"agentExplo",
-    "agentName": "Msg6",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": -1,
-    "backPackCapacityDiamond":-1,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"agentExplo",
-    "agentName": "Msg7",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": -1,
-    "backPackCapacityDiamond":-1,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
-  },
-  {
-    "agentType":"wumpus",
-    "agentName": "Msg8",
-    "communicationRange": 3,
-    "initialLocation": "free",
-    "backPackCapacityGold": -1,
-    "backPackCapacityDiamond":-1,
-    "detectionRadius": 0,
-    "strengthExpertise": 0,
-    "lockPickingExpertise":0
   }
 ]
 ````
@@ -231,13 +131,14 @@ Agents configuration file: resources/agents.json
 ## How to execute
 Follow the next steps to install and execute Dedale
 1. Clone or download the Git repository
-   https://gitlab.com/dedale/dedale-etu
+   https://github.com/danielDiezURV/MAS_treasure_hunt
 2. Open the dedale-etu project using IntelliJ. Note: open
    the inner dedale-etu folder
 3. Import the project as a Maven project
 4. If prompted, trust the project
+5. Install lombok plugin https://plugins.jetbrains.com/plugin/6317-lombok
 
 Build and execute Dedale using:
 ````
-mvn install exec:java
+mvn clean install exec:java
 ````

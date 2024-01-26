@@ -4,9 +4,9 @@ import eu.su.mas.dedaleEtu.mas.knowledge.enums.TreasureHuntAction;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
 
 @Builder
@@ -24,7 +24,10 @@ public class AgentStatus implements Serializable {
 	private List<String> followingPath;
 	@Setter
 	private Integer priority;
+	@Getter
 	private Integer desesperation;
+	@Getter
+	private Integer hierarchy;
 
 	public void setAction(TreasureHuntAction action) {
 		this.action = action;
@@ -41,13 +44,10 @@ public class AgentStatus implements Serializable {
 	public void resetDesesperation() {
 		this.desesperation = 0;
 	}
-
-	public Integer getHierarchy() {
-		return Integer.parseInt(this.agentName.replaceAll("[^0-9]", ""));
-	}
-
-	public void addMovementToPath(String location) {((LinkedList<String>)this.followingPath).addFirst(location);}
-	public void removeMovementFromPath(){
-		((LinkedList<String>)this.followingPath).removeFirst();
+	public void addMovementToPath(String location) {this.followingPath.add(0, location);}
+	public void removeMovementFromPath() {
+		if (CollectionUtils.isNotEmpty(this.followingPath)) {
+			this.followingPath.remove(0);
+		}
 	}
 }

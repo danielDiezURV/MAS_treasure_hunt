@@ -33,7 +33,7 @@ public class GetAgentStatusBehaviour extends TickerBehaviour {
 		while (msgReceived != null){
 			try {
 				AgentStatus sgreceived = (AgentStatus)msgReceived.getContentObject();
-				if (this.agentsInRange.stream().noneMatch(agentStatus -> agentStatus.getAgentName().equals(sgreceived.getAgentName()))){
+				if (sgreceived != null && this.agentsInRange.stream().noneMatch(agentStatus -> agentStatus.getAgentName().equals(sgreceived.getAgentName())))	{
 					this.agentsInRange.add(sgreceived);
 				}
 			} catch (UnreadableException e) {

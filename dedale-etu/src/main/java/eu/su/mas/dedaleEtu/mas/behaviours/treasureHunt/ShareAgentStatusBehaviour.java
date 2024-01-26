@@ -24,6 +24,9 @@ public class ShareAgentStatusBehaviour extends TickerBehaviour{
 
 	@Override
 	public void onTick() {
+		if (this.currentStatus == null){
+			return;
+		}
 		Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
 		//A message is defined by : a performative, a sender, a set of receivers, (a protocol),(a content (and/or contentOBject))
@@ -35,9 +38,7 @@ public class ShareAgentStatusBehaviour extends TickerBehaviour{
 		if (myPosition!=null && !myPosition.getLocationId().isEmpty()){
 			try {
 				msg.setContentObject(this.currentStatus);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
+			} catch (IOException ignored) {}
 			for (String agentName : receivers) {
 				msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
 			}

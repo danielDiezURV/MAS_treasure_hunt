@@ -267,9 +267,6 @@ public class MapRepresentation implements Serializable {
 	}
 
 	public void mergeMap(SerializableSimpleGraph<String, MapAttribute> sgreceived) {
-		//System.out.println("You should decide what you want to save and how");
-		//System.out.println("We currently blindy add the topology");
-
 		for (SerializableNode<String, MapAttribute> n: sgreceived.getAllNodes()){
 			//System.out.println(n);
 			boolean alreadyIn =false;

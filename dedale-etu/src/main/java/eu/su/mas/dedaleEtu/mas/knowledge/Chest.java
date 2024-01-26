@@ -4,9 +4,11 @@ import eu.su.mas.dedaleEtu.mas.knowledge.enums.ChestStatusEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,10 +29,12 @@ public class Chest implements Serializable {
 	private Integer notifiedTimes;
 
 	public void addMovementToPath(String location) {
-		((LinkedList<String>)this.pathToChest).addFirst(location);
+		// addFirst in pathToChest list
+		this.pathToChest.add(0, location);
 	}
 	public void removeMovementFromPath(){
-		((LinkedList<String>)this.pathToChest).removeFirst();
+		if (CollectionUtils.isNotEmpty(this.pathToChest)) {
+			this.pathToChest.remove(0);
+		}
 	}
-
 }

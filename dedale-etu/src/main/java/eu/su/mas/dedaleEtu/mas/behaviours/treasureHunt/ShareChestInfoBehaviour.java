@@ -45,7 +45,7 @@ public class ShareChestInfoBehaviour extends TickerBehaviour {
 				if (this.myMap != null){
 					for (Chest chest : this.chestLocations) {
 						List<String> shortestChestPathForAgent = null;
-						try{ shortestChestPathForAgent = this.myMap.getShortestPath(agent.getCurrentLocation(), chest.getChestLocation()); } catch (Exception e) {e.printStackTrace();}
+						try{ shortestChestPathForAgent = this.myMap.getShortestPath(agent.getCurrentLocation(), chest.getChestLocation()); } catch (Exception ignore) {}
 						chest.setPathToChest(CollectionUtils.isNotEmpty(shortestChestPathForAgent) ? shortestChestPathForAgent : chest.getPathToChest());
 						chestLocationMsg.addChestLocation(chest);
 					}
@@ -54,7 +54,7 @@ public class ShareChestInfoBehaviour extends TickerBehaviour {
 					chestLocationMsg.setChestLocations(this.chestLocations);
 				}
 
-                try { msg.setContentObject(chestLocationMsg); } catch (IOException e) {throw new RuntimeException(e);}
+                try { msg.setContentObject(chestLocationMsg); } catch (IOException ignored) {}
                 ((AbstractDedaleAgent) this.myAgent).sendMessage(msg);
 			}
 

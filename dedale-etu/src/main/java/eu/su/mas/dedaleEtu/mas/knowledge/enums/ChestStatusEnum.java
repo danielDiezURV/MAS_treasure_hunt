@@ -1,12 +1,14 @@
 package eu.su.mas.dedaleEtu.mas.knowledge.enums;
 
+import lombok.Getter;
 
+@Getter
 public enum ChestStatusEnum {
 	CLOSED(0),
 	OPEN(1),
 	EMPTY(2);
 
-	private int status;
+	private final int status;
 
 	ChestStatusEnum(int i) {
 		this.status = i;
