@@ -6,15 +6,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.io.Serial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 @Getter @Setter @Builder
-public class Chest implements Serializable {
+public class ChestStatus implements Serializable {
+
 	private static final long serialVersionUID = -2343866585541649998L;
 
 	private ChestStatusEnum status;

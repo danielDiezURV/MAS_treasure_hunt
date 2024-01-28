@@ -8,7 +8,6 @@ import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agents.GateKeeperAgent;
 import eu.su.mas.dedaleEtu.mas.agents.treasureHunt.CollectorAgent;
 import eu.su.mas.dedaleEtu.mas.agents.treasureHunt.ExplorerAgent;
-import eu.su.mas.dedaleEtu.mas.agents.treasureHunt.MessengerAgent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
@@ -271,8 +270,7 @@ public class Principal {
 		c = containerList.get(ConfigurationFile.LOCAL_CONTAINER2_NAME);
 		Object [] entityParameters = {actionPeriodMilliseconds ,
 									 "Explo1","Explo2", "Explo3", "Explo4",
-								     "Collect1", "Collect2", "Collect3", "Collect4",
-				 					 "Msg1", "Msg2", "Msg3", "Msg4", "Msg5", "Msg6", "Msg7", "Msg8" };
+								     "Collect1", "Collect2", "Collect3", "Collect4"};
 		//Initialize explorers
 		agentName = "Explo1";
 		ag = createNewDedaleAgent(c, agentName, ExplorerAgent.class.getName(), entityParameters);

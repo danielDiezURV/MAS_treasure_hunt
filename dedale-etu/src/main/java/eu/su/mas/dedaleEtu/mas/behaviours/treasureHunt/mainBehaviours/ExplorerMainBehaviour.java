@@ -7,11 +7,11 @@ import eu.su.mas.dedale.env.gs.gsLocation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt.*;
 import eu.su.mas.dedaleEtu.mas.knowledge.AgentStatus;
-import eu.su.mas.dedaleEtu.mas.knowledge.Chest;
+import eu.su.mas.dedaleEtu.mas.knowledge.ChestStatus;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation.MapAttribute;
 import eu.su.mas.dedaleEtu.mas.knowledge.enums.ChestStatusEnum;
-import eu.su.mas.dedaleEtu.mas.knowledge.enums.TreasureHuntAction;
+import eu.su.mas.dedaleEtu.mas.knowledge.enums.TreasureHuntActionEnum;
 import jade.core.behaviours.SimpleBehaviour;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -25,9 +25,8 @@ public class ExplorerMainBehaviour extends SimpleBehaviour {
 
 	//Explorer behaviour parameters
 	private MapRepresentation myMap;
-	private List<String> explorerNames;
 	private List<String> agentNames;
-	private List<Chest> chests;
+	private List<ChestStatus> chests;
 	private List<AgentStatus> agentsInRange;
 	private AgentStatus currentStatus;
 	private String previousLocation;
@@ -36,7 +35,7 @@ public class ExplorerMainBehaviour extends SimpleBehaviour {
     private Integer period;
 
 	public ExplorerMainBehaviour(final AbstractDedaleAgent myAgent, Integer period, MapRepresentation myMap,
-								 List<String> agentNames, List<Chest> chests, List<AgentStatus> agentsInRange, AgentStatus currentStatus) {
+								 List<String> agentNames, List<ChestStatus> chests, List<AgentStatus> agentsInRange, AgentStatus currentStatus) {
 		super(myAgent);
 		this.myAgent = myAgent;
         this.period = period;
@@ -64,11 +63,8 @@ public class ExplorerMainBehaviour extends SimpleBehaviour {
 		}
 
 		Location myPosition = ((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
-
 		assert myPosition != null;
-
 		List<Couple<Location,List<Couple<Observation,Integer>>>> lobs = ((AbstractDedaleAgent)this.myAgent).observe();
-
 		this.wait(period);
 
 		this.updateMap(lobs, myPosition);
@@ -79,32 +75,32 @@ public class ExplorerMainBehaviour extends SimpleBehaviour {
 
 	}
 
-	private TreasureHuntAction chooseNextAction(List<Couple<Location,List<Couple<Observation,Integer>>>> lobs) {
+	private TreasureHuntActionEnum chooseNextAction(List<Couple<Location,List<Couple<Observation,Integer>>>> lobs) {
 		List<String> freeLocations = lobs.stream().map(Couple::getLeft).map(Location::getLocationId).collect(Collectors.toList());
 		if (CollectionUtils.isNotEmpty(freeLocations)) {
-			List<Chest> closedChest = this.chests.stream().filter(chest -> chest.getStatus().equals(ChestStatusEnum.CLOSED) && chest.getLockPickRequired() <= chest.getNotifiedLockPick()).collect(Collectors.toList());
+			List<ChestStatus> closedChest = this.chests.stream().filter(chest -> chest.getStatus().equals(ChestStatusEnum.CLOSED) && chest.getLockPickRequired() <= chest.getNotifiedLockPick()).collect(Collectors.toList());
 			if (CollectionUtils.isNotEmpty(closedChest)) {
 				this.currentStatus.setFollowingPath(nextFollowingPathToChest(closedChest, freeLocations));
-				return TreasureHuntAction.E_UNLOCK_CHEST;
+				return TreasureHuntActionEnum.E_UNLOCK_CHEST;
 			} else if (this.myMap.hasOpenNode()) {
 				this.currentStatus.setFollowingPath(this.myMap.getShortestPathToClosestOpenNode(((AbstractDedaleAgent) this.myAgent).getCurrentPosition().getLocationId()));
-				return TreasureHuntAction.E_EXPLORE;
+				return TreasureHuntActionEnum.E_EXPLORE;
 			} else {
                 if(!myJobHereIsDone){
                     System.out.println(this.myAgent.getLocalName() + " - My job here is done. All chest are open and I know all the map. Leaving explorer role and turning into coordinator. Total ticks:" + this.tickCounter);
                     this.myJobHereIsDone = true;
                 }
 				this.currentStatus.setFollowingPath(this.getRandomMovementPath(freeLocations));
-				return TreasureHuntAction.E_COORDINATE;
+				return TreasureHuntActionEnum.E_COORDINATE;
 			}
 		}
 		return null;
 	}
 
-	private List<String> nextFollowingPathToChest(List<Chest> closedChests, List<String> observableLocations) {
+	private List<String> nextFollowingPathToChest(List<ChestStatus> closedChests, List<String> observableLocations) {
 		List<String> chestPath = null;
 
-		for (Chest chest : closedChests) {
+		for (ChestStatus chest : closedChests) {
 			try {
 				chestPath = this.myMap.getShortestPath(((AbstractDedaleAgent)this.myAgent).getCurrentPosition().getLocationId(), chest.getChestLocation());
 			} catch (Exception ignore) {}
@@ -114,7 +110,7 @@ public class ExplorerMainBehaviour extends SimpleBehaviour {
 		}
 
 		if (CollectionUtils.isEmpty(chestPath)) {
-			for (Chest chest : closedChests) {
+			for (ChestStatus chest : closedChests) {
 				Optional<String> observableLocation = observableLocations.stream().filter(chest.getPathToChest()::contains).findFirst();
 				if (observableLocation.isPresent()) {
 					int indexOfObservableLocation = chest.getPathToChest().indexOf(observableLocation.get());
@@ -129,7 +125,7 @@ public class ExplorerMainBehaviour extends SimpleBehaviour {
 		return chestPath;
 	}
 
-	private void performNextMovement(TreasureHuntAction nextAction, List<Couple<Location,List<Couple<Observation,Integer>>>> lobs) {
+	private void performNextMovement(TreasureHuntActionEnum nextAction, List<Couple<Location,List<Couple<Observation,Integer>>>> lobs) {
 		this.previousLocation = ((AbstractDedaleAgent)this.myAgent).getCurrentPosition().getLocationId();
 
 		List<AgentStatus> agentsWithPriority = this.agentsInRange.stream().filter(agentStatus -> agentStatus.getPriority() > this.currentStatus.getPriority() ||
@@ -159,7 +155,7 @@ public class ExplorerMainBehaviour extends SimpleBehaviour {
 								chest.setStatus(ChestStatusEnum.OPEN);
 								chest.setLastUpdate(new Date());
 							});
-							System.out.println(this.myAgent.getLocalName() + " - Chest is open at " + ((AbstractDedaleAgent) this.myAgent).getCurrentPosition().getLocationId());
+							System.out.println(this.myAgent.getLocalName() + " - ChestStatus is open at " + ((AbstractDedaleAgent) this.myAgent).getCurrentPosition().getLocationId() + " [ TickCount: " + this.tickCounter+ "]");
 						}
 					}
 					break;
@@ -171,7 +167,6 @@ public class ExplorerMainBehaviour extends SimpleBehaviour {
 			}
 		}
 		else{
-			//detect if concurrentLocations are accesibles observing though agent
 			List<String> concurrentLocations = lobs.stream().map(Couple::getLeft).map(Location::getLocationId).collect(Collectors.toList());
 			avoidDeadlock(priorityMovements, concurrentLocations);
 		}
@@ -220,7 +215,7 @@ public class ExplorerMainBehaviour extends SimpleBehaviour {
 		for (Couple<Observation, Integer> obs : nodeData) {
 			obsMap.put(obs.getLeft().toString(), obs.getRight());
 		}
-		if (obsMap.containsKey("Diamond") || obsMap.containsKey("Gold")) {
+		if (obsMap.containsKey("LockIsOpen")) {
 			// if chest is in the list comparing by location, update it
 			if (this.chests.stream().anyMatch(chest -> chest.getChestLocation().equals(chestLocation))) {
 				this.chests.stream().filter(chest -> chest.getChestLocation().equals(chestLocation)).forEach(chest -> {
@@ -234,7 +229,7 @@ public class ExplorerMainBehaviour extends SimpleBehaviour {
 				});
 			}
 			else{
-			Chest chest = Chest.builder()
+			ChestStatus chest = ChestStatus.builder()
 						 .status(ChestStatusEnum.getStatus(obsMap.get("LockIsOpen"), obsMap.getOrDefault("Gold", 0),	obsMap.getOrDefault("Diamond", 0)))
 						 .pathToChest(this.myMap.getShortestPath(agentLocation, chestLocation))
 						 .chestLocation(chestLocation)

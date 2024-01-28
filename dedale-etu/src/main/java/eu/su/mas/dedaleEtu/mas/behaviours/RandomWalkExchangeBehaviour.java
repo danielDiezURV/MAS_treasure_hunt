@@ -1,4 +1,4 @@
-package eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt;
+package eu.su.mas.dedaleEtu.mas.behaviours;
 
 import dataStructures.tuple.Couple;
 import eu.su.mas.dedale.env.Location;

@@ -1,6 +1,6 @@
 package eu.su.mas.dedaleEtu.mas.knowledge;
 
-import eu.su.mas.dedaleEtu.mas.knowledge.enums.TreasureHuntAction;
+import eu.su.mas.dedaleEtu.mas.knowledge.enums.TreasureHuntActionEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,7 @@ public class AgentStatus implements Serializable {
 	private static final long serialVersionUID = 9122840206357843902L;
 
 	@Getter
-	private TreasureHuntAction action;
+	private TreasureHuntActionEnum action;
 	@Getter @Setter
 	private String agentName;
 	@Getter @Setter
@@ -29,7 +29,7 @@ public class AgentStatus implements Serializable {
 	@Getter
 	private Integer hierarchy;
 
-	public void setAction(TreasureHuntAction action) {
+	public void setAction(TreasureHuntActionEnum action) {
 		this.action = action;
 		this.priority = action.getPriority();
 	}

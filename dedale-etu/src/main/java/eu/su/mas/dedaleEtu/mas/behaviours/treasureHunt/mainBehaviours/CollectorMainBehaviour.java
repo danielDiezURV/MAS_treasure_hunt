@@ -7,9 +7,9 @@ import eu.su.mas.dedale.env.gs.gsLocation;
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt.*;
 import eu.su.mas.dedaleEtu.mas.knowledge.AgentStatus;
-import eu.su.mas.dedaleEtu.mas.knowledge.Chest;
+import eu.su.mas.dedaleEtu.mas.knowledge.ChestStatus;
 import eu.su.mas.dedaleEtu.mas.knowledge.enums.ChestStatusEnum;
-import eu.su.mas.dedaleEtu.mas.knowledge.enums.TreasureHuntAction;
+import eu.su.mas.dedaleEtu.mas.knowledge.enums.TreasureHuntActionEnum;
 import jade.core.behaviours.SimpleBehaviour;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -23,7 +23,7 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 	private boolean finished;
 	private boolean initialConfig;
 	private List<String> agentNames;
-	private List<Chest> chests;
+	private List<ChestStatus> chests;
 	private List<AgentStatus> agentsInRange;
 	private AgentStatus currentStatus;
 	private String previousLocation;
@@ -32,7 +32,7 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
     private Integer period;
 
 	public CollectorMainBehaviour(final AbstractDedaleAgent myAgent, Integer period, List<String> agentNames,
-								  List<Chest> chests, List<AgentStatus> agentsInRange, AgentStatus currentStatus) {
+								  List<ChestStatus> chests, List<AgentStatus> agentsInRange, AgentStatus currentStatus) {
 		super(myAgent);
 		this.myAgent = myAgent;
         this.period = period;
@@ -61,8 +61,8 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 
 		assert this.currentStatus.getCurrentLocation() != null;
 
-		List<Chest> closedChests = this.chests.stream().filter(chest -> chest.getStatus().equals(ChestStatusEnum.CLOSED) && chest.getLockPickRequired() <= chest.getNotifiedLockPick()).collect(Collectors.toList());
-		List<Chest> openChests = this.chests.stream().filter(chest -> chest.getStatus().equals(ChestStatusEnum.OPEN)).collect(Collectors.toList());
+		List<ChestStatus> closedChests = this.chests.stream().filter(chest -> chest.getStatus().equals(ChestStatusEnum.CLOSED) && chest.getLockPickRequired() <= chest.getNotifiedLockPick()).collect(Collectors.toList());
+		List<ChestStatus> openChests = this.chests.stream().filter(chest -> chest.getStatus().equals(ChestStatusEnum.OPEN)).collect(Collectors.toList());
 
 		List<Couple<Location,List<Couple<Observation,Integer>>>> lobs = ((AbstractDedaleAgent)this.myAgent).observe();
 
@@ -76,9 +76,9 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 
 	}
 
-	private TreasureHuntAction chooseNextAction(List<Couple<Location,List<Couple<Observation,Integer>>>> lobs, List<Chest> closedChests, List<Chest> openChests) {
+	private TreasureHuntActionEnum chooseNextAction(List<Couple<Location,List<Couple<Observation,Integer>>>> lobs, List<ChestStatus> closedChests, List<ChestStatus> openChests) {
 		Optional<String> observablePathLocation;
-		List<Chest> openChestsByType;
+		List<ChestStatus> openChestsByType;
 		Integer agentFreeCapacity;
 		openChestsByType =((AbstractDedaleAgent)this.myAgent).getMyTreasureType().equals(Observation.GOLD) ?
 				openChests.stream().filter(chest -> chest.getGold() > 0).collect(Collectors.toList()) :
@@ -89,28 +89,28 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 		if (CollectionUtils.isNotEmpty(freeLocations) && agentFreeCapacity > 0) {
 
 			if (CollectionUtils.isNotEmpty(openChestsByType)) {
-				for (Chest chest : openChestsByType) {
+				for (ChestStatus chest : openChestsByType) {
 					observablePathLocation = freeLocations.stream().filter(chest.getPathToChest()::contains).findFirst();
 					if (observablePathLocation.isPresent()) {
 						int indexOfObservableLocation = chest.getPathToChest().indexOf(observablePathLocation.get());
 						this.currentStatus.setFollowingPath(new ArrayList<>(chest.getPathToChest().subList(indexOfObservableLocation, chest.getPathToChest().size())));
-						return TreasureHuntAction.C_COLLECT_CHEST;
+						return TreasureHuntActionEnum.C_COLLECT_CHEST;
 					}
 				}
 			}
 			if (CollectionUtils.isNotEmpty(closedChests)) {
-				for (Chest chest : closedChests) {
+				for (ChestStatus chest : closedChests) {
 					observablePathLocation = freeLocations.stream().filter(chest.getPathToChest()::contains).findFirst();
 					if (observablePathLocation.isPresent()) {
 						int indexOfObservableLocation = chest.getPathToChest().indexOf(observablePathLocation.get());
 						this.currentStatus.setFollowingPath(new ArrayList<> (chest.getPathToChest().subList(indexOfObservableLocation, chest.getPathToChest().size())));
-						return TreasureHuntAction.C_UNLOCK_CHEST;
+						return TreasureHuntActionEnum.C_UNLOCK_CHEST;
 					}
 				}
 			}
 			else {
 				this.currentStatus.setFollowingPath(this.getRandomMovementPath(freeLocations));
-				return TreasureHuntAction.C_EXPLORE;
+				return TreasureHuntActionEnum.C_EXPLORE;
 			}
 		}
 		if(!myJobHereIsDone && agentFreeCapacity == 0){
@@ -118,10 +118,10 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 			this.myJobHereIsDone = true;
 		}
 		this.currentStatus.setFollowingPath(this.getRandomMovementPath(freeLocations));
-		return TreasureHuntAction.C_EXPLORE;
+		return TreasureHuntActionEnum.C_EXPLORE;
 	}
 
-	private void performNextMovement(TreasureHuntAction nextAction, List<Couple<Location,List<Couple<Observation,Integer>>>> lobs, List<Chest> closedChests, List<Chest> openChests) {
+	private void performNextMovement(TreasureHuntActionEnum nextAction, List<Couple<Location,List<Couple<Observation,Integer>>>> lobs, List<ChestStatus> closedChests, List<ChestStatus> openChests) {
 		List<Observation> observables;
 		this.previousLocation = ((AbstractDedaleAgent)this.myAgent).getCurrentPosition().getLocationId();
 
@@ -132,6 +132,7 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 				.filter(agentStatus -> CollectionUtils.isNotEmpty(agentStatus.getFollowingPath()))
 				.flatMap(agentStatus -> agentStatus.getFollowingPath().stream().limit(2))
 				.collect(Collectors.toList());
+		priorityMovements.addAll(agentsWithPriority.stream().map(AgentStatus::getCurrentLocation).collect(Collectors.toList()));
 
 		if (!priorityMovements.contains(this.currentStatus.getFollowingPath().get(0))) {
 			switch (nextAction) {
@@ -142,7 +143,19 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 					}
 					observables = ((AbstractDedaleAgent)this.myAgent).observe().stream().map(Couple::getRight).flatMap(Collection::stream).map(Couple::getLeft).collect(Collectors.toList());
 					if (CollectionUtils.isNotEmpty(observables)) {
-						((AbstractDedaleAgent) this.myAgent).pick();
+						int quantityCollected = ((AbstractDedaleAgent) this.myAgent).pick();
+						if (quantityCollected > 0){
+							observables = ((AbstractDedaleAgent)this.myAgent).observe().stream().map(Couple::getRight).flatMap(Collection::stream).map(Couple::getLeft).collect(Collectors.toList());
+							if (!observables.contains(Observation.GOLD) && !observables.contains(Observation.DIAMOND)){
+								this.chests.stream().filter(chest -> chest.getChestLocation().equals(this.currentStatus.getFollowingPath().get(0))).forEach(chest -> {
+									chest.setStatus(ChestStatusEnum.EMPTY);
+									chest.setGold(0);
+									chest.setDiamond(0);
+									chest.setLastUpdate(new Date());
+								});
+								System.out.println(this.myAgent.getLocalName() + " - ChestStatus is empty at " + ((AbstractDedaleAgent) this.myAgent).getCurrentPosition().getLocationId() + " [ TickCount: " + this.tickCounter+ "]");
+							}
+						}
 						return;
 					}
 					break;
@@ -159,7 +172,7 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 								chest.setStatus(ChestStatusEnum.OPEN);
 								chest.setLastUpdate(new Date());
 							});
-							System.out.println(this.myAgent.getLocalName() + " - Chest is open at " + ((AbstractDedaleAgent) this.myAgent).getCurrentPosition().getLocationId());
+							System.out.println(this.myAgent.getLocalName() + " - ChestStatus is open at " + ((AbstractDedaleAgent) this.myAgent).getCurrentPosition().getLocationId() + " [ TickCount: " + this.tickCounter+ "]");
 						}
 					}
 					break;
@@ -215,10 +228,10 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 	private void updatePaths(String previousLocation, String currentLocation) {
 		boolean wasInPath;
 		boolean isInPath;
-		List<Chest> pathChestToUpdate = new ArrayList<>(this.chests);
+		List<ChestStatus> pathChestToUpdate = new ArrayList<>(this.chests);
 		pathChestToUpdate = pathChestToUpdate.stream().filter(chest -> chest.getPathToChest().contains(previousLocation) || chest.getPathToChest().contains(currentLocation)).collect(Collectors.toList());
 
-		for (Chest chest : pathChestToUpdate){
+		for (ChestStatus chest : pathChestToUpdate){
 			wasInPath = chest.getPathToChest().contains(previousLocation);
 			isInPath = chest.getPathToChest().contains(currentLocation);
 			if (wasInPath && !isInPath) {
@@ -236,15 +249,13 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 
 	private void updateChestLocations(String agentLocation, List<Couple<Location, List<Couple<Observation, Integer>>>> lobs) {
 		Map<String, Integer> obsMap = new HashMap<>();
-		String nextNodeId = null;
 		for (Couple<Location, List<Couple<Observation, Integer>>> node : lobs) {
 			String accessibleNode = node.getLeft().getLocationId();
 			if (CollectionUtils.isNotEmpty(node.getRight())) {
 				for (Couple<Observation, Integer> obs : node.getRight()) {
 					obsMap.put(obs.getLeft().toString(), obs.getRight());
 				}
-				if (obsMap.containsKey("Diamond") || obsMap.containsKey("Gold")) {
-					// if chest is in the list comparing by location, update it
+				if (obsMap.containsKey("LockIsOpen")) {
 					if (this.chests.stream().anyMatch(chest -> chest.getChestLocation().equals(accessibleNode))) {
 						this.chests.stream().filter(chest -> chest.getChestLocation().equals(accessibleNode)).forEach(chest -> {
 							chest.setStatus(ChestStatusEnum.getStatus(obsMap.get("LockIsOpen"), obsMap.getOrDefault("Gold", 0), obsMap.getOrDefault("Diamond", 0)));
@@ -257,7 +268,7 @@ public class CollectorMainBehaviour extends SimpleBehaviour {
 						});
 					}
 					else{
-						Chest chest = Chest.builder()
+						ChestStatus chest = ChestStatus.builder()
 								.status(ChestStatusEnum.getStatus(obsMap.get("LockIsOpen"), obsMap.getOrDefault("Gold", 0),	obsMap.getOrDefault("Diamond", 0)))
 								.pathToChest(new ArrayList<>(Arrays.asList(agentLocation, accessibleNode)))
 								.chestLocation(accessibleNode)

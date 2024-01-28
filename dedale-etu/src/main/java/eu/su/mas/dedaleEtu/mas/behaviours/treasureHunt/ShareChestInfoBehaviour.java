@@ -2,7 +2,7 @@ package eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt;
 
 import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedaleEtu.mas.knowledge.AgentStatus;
-import eu.su.mas.dedaleEtu.mas.knowledge.Chest;
+import eu.su.mas.dedaleEtu.mas.knowledge.ChestStatus;
 import eu.su.mas.dedaleEtu.mas.knowledge.ChestLocationMessage;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import jade.core.AID;
@@ -12,18 +12,16 @@ import jade.lang.acl.ACLMessage;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ShareChestInfoBehaviour extends TickerBehaviour {
-	private List<Chest> chestLocations;
+	private List<ChestStatus> chestLocations;
 	private MapRepresentation myMap;
 	private final List<AgentStatus> agentsInRange;
 
 
 
-	public ShareChestInfoBehaviour(Agent a, long period, List<Chest> chestLocations, List<AgentStatus> agentsInRange, MapRepresentation myMap) {
+	public ShareChestInfoBehaviour(Agent a, long period, List<ChestStatus> chestLocations, List<AgentStatus> agentsInRange, MapRepresentation myMap) {
 		super(a, period);
 		this.chestLocations = chestLocations;
 		this.agentsInRange = agentsInRange;
@@ -43,7 +41,7 @@ public class ShareChestInfoBehaviour extends TickerBehaviour {
 
 				ChestLocationMessage chestLocationMsg = new ChestLocationMessage();
 				if (this.myMap != null){
-					for (Chest chest : this.chestLocations) {
+					for (ChestStatus chest : this.chestLocations) {
 						List<String> shortestChestPathForAgent = null;
 						try{ shortestChestPathForAgent = this.myMap.getShortestPath(agent.getCurrentLocation(), chest.getChestLocation()); } catch (Exception ignore) {}
 						chest.setPathToChest(CollectionUtils.isNotEmpty(shortestChestPathForAgent) ? shortestChestPathForAgent : chest.getPathToChest());

@@ -4,20 +4,19 @@ import eu.su.mas.dedale.mas.AbstractDedaleAgent;
 import eu.su.mas.dedale.mas.agent.behaviours.platformManagment.startMyBehaviours;
 import eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt.mainBehaviours.ExplorerMainBehaviour;
 import eu.su.mas.dedaleEtu.mas.knowledge.AgentStatus;
-import eu.su.mas.dedaleEtu.mas.knowledge.Chest;
+import eu.su.mas.dedaleEtu.mas.knowledge.ChestStatus;
 import eu.su.mas.dedaleEtu.mas.knowledge.MapRepresentation;
 import jade.core.behaviours.Behaviour;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ExplorerAgent extends AbstractDedaleAgent {
 
 	private static final long serialVersionUID = -7969469610241668140L;
 	private MapRepresentation myMap;
 	private List<String> agentNames;
-	private List<Chest> chests;
+	private List<ChestStatus> chests;
 	private List<AgentStatus> agentsInRange;
 	private AgentStatus currentStatus;
 

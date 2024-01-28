@@ -29,7 +29,6 @@ public class ShareAgentStatusBehaviour extends TickerBehaviour{
 		}
 		Location myPosition=((AbstractDedaleAgent)this.myAgent).getCurrentPosition();
 
-		//A message is defined by : a performative, a sender, a set of receivers, (a protocol),(a content (and/or contentOBject))
 		ACLMessage msg=new ACLMessage(ACLMessage.INFORM);
 		
 		msg.setSender(this.myAgent.getAID());
@@ -42,8 +41,6 @@ public class ShareAgentStatusBehaviour extends TickerBehaviour{
 			for (String agentName : receivers) {
 				msg.addReceiver(new AID(agentName,AID.ISLOCALNAME));
 			}
-
-			//Mandatory to use this method (it takes into account the environment to decide if someone is reachable or not)
 			((AbstractDedaleAgent)this.myAgent).sendMessage(msg);
 		}
 	}

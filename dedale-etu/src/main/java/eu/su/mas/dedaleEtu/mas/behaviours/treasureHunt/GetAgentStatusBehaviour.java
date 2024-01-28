@@ -1,8 +1,6 @@
 package eu.su.mas.dedaleEtu.mas.behaviours.treasureHunt;
 
 import eu.su.mas.dedaleEtu.mas.knowledge.AgentStatus;
-import eu.su.mas.dedaleEtu.mas.knowledge.Chest;
-import eu.su.mas.dedaleEtu.mas.knowledge.ChestLocationMessage;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -27,9 +25,7 @@ public class GetAgentStatusBehaviour extends TickerBehaviour {
 				MessageTemplate.MatchProtocol("SHARE-AGENT-STATUS"),
 				MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 		ACLMessage msgReceived=this.myAgent.receive(msgTemplate);
-		if(msgReceived != null){
-			this.agentsInRange.clear();
-		}
+		this.agentsInRange.clear();
 		while (msgReceived != null){
 			try {
 				AgentStatus sgreceived = (AgentStatus)msgReceived.getContentObject();
